@@ -60,9 +60,13 @@ class EntityLivingBase(Entity):
         if np.abs(self.motion_z) < threshold:
             self.motion_z = np.float64(0.0)
 
-        self.update_entity_action_state() # TODO: Remove this?
+        self.update_entity_action_state()
 
         if self.is_jumping:
+            # if self.is_in_water():
+            #     self.update_AI_tick
+            # elif self.is_in_lava():
+            #     self.handle_jump_lava()
             if self.on_ground and self.jump_ticks == 0:
                 self.jump()
                 self.jump_ticks = 10
@@ -76,16 +80,16 @@ class EntityLivingBase(Entity):
     def move_entity_with_heading(self, strafe, forward):
         f4 = np.float32(0.91)
 
-        # if self.on_ground:
-        #     f4 = self.world_obj.get_block_state(
-        #         BlockPos(
-        #             MathHelper.floor_double(self.pos_x),
-        #             MathHelper.floor_double(self.get_entity_bounding_box().min_y) - 1,
-        #             MathHelper.floor_double(self.pos_z)
-        #             )
-        #     ).get_block().slipperiness * np.float32(0.91)
+        if self.on_ground:
+            f4 = self.world_obj.get_block_state(
+                BlockPos(
+                    MathHelper.floor_double(self.pos_x),
+                    MathHelper.floor_double(self.get_entity_bounding_box().min_y) - 1,
+                    MathHelper.floor_double(self.pos_z)
+                    )
+            ).get_block().slipperiness * np.float32(0.91)
 
-        f4 = np.float32(0.6) * np.float32(0.91) # TODO: Remove once implement above
+        # f4 = np.float32(0.6) * np.float32(0.91)
 
         f = np.float32(0.16277136) / (f4 * f4 * f4)
 

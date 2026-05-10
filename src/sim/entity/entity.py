@@ -144,6 +144,8 @@ class Entity:
         # if self.is_in_lava():
         #     self.set_on_fire_from_lava()
         #     self.fall_distance *= np.float32(0.5)
+
+        self.first_update = False
     
     def is_sneaking(self):
         return self.get_flag(1)

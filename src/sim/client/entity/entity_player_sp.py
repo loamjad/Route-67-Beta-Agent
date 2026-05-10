@@ -7,8 +7,12 @@ from src.sim.client.settings.game_settings import GameSettings
 class EntityPlayerSP(AbstractClientPlayer):
 
     def __init__(self):
-        super().__init__()
         self.movement_input = MovementInputFromOptions(GameSettings())
+
+        super().__init__()
+        
+    def on_update(self):
+        super().on_update()
 
     def on_living_update(self):
         flag = self.movement_input.jump
@@ -21,9 +25,6 @@ class EntityPlayerSP(AbstractClientPlayer):
             self.set_sprinting(True)
 
         super().on_living_update()
-
-    def on_update(self):
-        super().on_update()
 
     def update_entity_action_state(self):
         self.move_strafing = self.movement_input.move_strafe
