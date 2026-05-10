@@ -11,19 +11,23 @@ from src.sim.entity.shared_monster_attributes import SharedMonsterAttributes
 
 class EntityLivingBase(Entity):
     def __init__(self):
-        super().__init__()
-        self.attribute_map = None
         self.sprinting_speed_boost_modifier_UUID = uuid.UUID("662A6B8D-DA3E-4C1C-8813-96EA6097278D")
         self.sprinting_speed_boost_modifier = AttributeModifier(self.sprinting_speed_boost_modifier_UUID, "Sprinting spped boost", np.float64(0.30000001192092896), 2).set_saved(False)
-        
-        self.apply_entity_attributes()
+        self.attribute_map = None
+        self.jump_movement_factor = np.float32(0.02)
         self.is_jumping = False
-        self.jump_ticks = 0
         self.move_strafing = np.float32(0.0)
         self.move_forward = np.float32(0.0)
-        self.random_yaw_velocity = np.float32(0.0)
-        self.jump_movement_factor = np.float32(0.02)
-        self.land_movement_factor = np.float64(0.10000000149011612)
+        self.new_pos_x = np.float64(0.0)
+        self.new_pos_y = np.float64(0.0)
+        self.new_pos_z = np.float64(0.0)
+        self.new_rotation_yaw = np.float64(0.0)
+        self.new_rotation_pitch = np.float64(0.0)
+        self.land_movement_factor = np.float64(0.10000000149011612) #TODO: Don't init value?
+        self.jump_ticks = 0
+
+        super().__init__()
+        self.apply_entity_attributes()
         self.step_height = np.float32(0.6)
 
     def get_jump_upwards_motion(self) -> np.float32:
@@ -41,7 +45,7 @@ class EntityLivingBase(Entity):
 
     def on_update(self):
         super().on_update()
-        
+
         self.on_living_update()
 
     def on_living_update(self):
@@ -67,7 +71,6 @@ class EntityLivingBase(Entity):
 
         self.move_strafing *= np.float32(0.98)
         self.move_forward *= np.float32(0.98)
-        self.random_yaw_velocity *= np.float32(0.9)
         self.move_entity_with_heading(self.move_strafing, self.move_forward)
 
     def move_entity_with_heading(self, strafe, forward):
@@ -105,10 +108,10 @@ class EntityLivingBase(Entity):
         self.motion_y *= np.float64(0.9800000190734863)
         self.motion_x *= np.float64(f4)
         self.motion_z *= np.float64(f4)
-    
+
     def get_AI_move_speed(self):
         return np.float32(self.get_entity_attribute(SharedMonsterAttributes.movement_speed).get_attribute_value())
-    
+
     def set_AI_move_speed(self, speed_in):
         self.land_movement_factor = speed_in
 
@@ -121,15 +124,16 @@ class EntityLivingBase(Entity):
 
         if sprinting:
             iattributeinstance.apply_modifier(self.sprinting_speed_boost_modifier)
-    
+
     def get_entity_attribute(self, attribute):
         return self.get_attribute_map().get_attribute_instance(attribute)
-    
+
     def get_attribute_map(self):
         if self.attribute_map == None:
             self.attribute_map = ServersideAttributeMap()
 
         return self.attribute_map
-    
+
     def apply_entity_attributes(self):
         self.get_attribute_map().register_attribute(SharedMonsterAttributes.movement_speed)
+

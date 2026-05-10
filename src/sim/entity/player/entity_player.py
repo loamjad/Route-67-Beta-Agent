@@ -1,13 +1,19 @@
 import numpy as np
 
-from src.sim.entity.player.entity_living_base import EntityLivingBase
+from src.sim.entity.entity_living_base import EntityLivingBase
 from src.sim.entity.shared_monster_attributes import SharedMonsterAttributes
+from src.sim.util.block_pos import BlockPos
 
 
 class EntityPlayer(EntityLivingBase):
     def __init__(self):
-        super().__init__()
+        # The current location of the player
+        self.player_location: BlockPos = None
+        self.speed_on_ground = np.float32(0.1)
         self.speed_in_air = np.float32(0.02)
+
+        super().__init__()
+        
 
     def on_update(self):
         super().on_update()

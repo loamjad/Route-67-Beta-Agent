@@ -9,22 +9,10 @@ from src.sim.util.math_helper import MathHelper
 class Entity:
     def __init__(self):
         ZERO_AABB = AxisAlignedBB(np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0), np.float64(0.0))
-
         self.world_obj = None
-
-        self.bounding_box = ZERO_AABB
-        self.width = np.float32(0.6)
-        self.height = np.float32(1.8)
-        self.nextStepDistance = 1
-        self.set_position(np.float64(0.0), np.float64(0.0), np.float64(0.0))
-
-        self.data_watcher = DataWatcher(self)
-        self.data_watcher.add_object(0, np.int8(0))
-        self.data_watcher.add_object(1, np.int16(300))
-        self.data_watcher.add_object(3, np.int8(0))
-        self.data_watcher.add_object(2, "")
-        self.data_watcher.add_object(4, np.int8(0))
-
+        self.prev_pos_x = np.float64(0.0)
+        self.prev_pos_y = np.float64(0.0)
+        self.prev_pos_z = np.float64(0.0)
         self.pos_x = np.float64(0.0)
         self.pos_y = np.float64(0.0)
         self.pos_z = np.float64(0.0)
@@ -33,19 +21,41 @@ class Entity:
         self.motion_z = np.float64(0.0)
         self.rotation_yaw = np.float32(0.0)
         self.rotation_pitch = np.float32(0.0)
-        self.on_ground = False
+        self.prev_rotation_yaw = np.float32(0.0)
+        self.prev_rotation_pitch = np.float32(0.0)
+        self.bounding_box = ZERO_AABB
+        self.on_ground = True
         self.is_collided_horizontally = False
         self.is_collided_vertically = False
         self.is_collided = False
+        self.is_in_web = False
+        self.width = np.float32(0.6)
+        self.height = np.float32(1.8)
+        self.nextStepDistance = 1
+        self.step_height = np.float32(0.0)
+        self.ticks_existed = 0
+        self.in_water = False
+        self.data_watcher = DataWatcher(self)
+        self.is_air_borne = False
+        
+        self.set_position(np.float64(0.0), np.float64(0.0), np.float64(0.0))
+        self.data_watcher.add_object(0, np.int8(0))
+        self.data_watcher.add_object(1, np.int16(300))
+        self.data_watcher.add_object(3, np.int8(0))
+        self.data_watcher.add_object(2, "")
+        self.data_watcher.add_object(4, np.int8(0))
+
+
+
+
+
 
         self.last_tick_pos_x = np.float64(0.0)
         self.last_tick_pos_y = np.float64(0.0)
         self.last_tick_pos_z = np.float64(0.0)
-        self.is_air_borne = False
+        
 
-        self.prev_pos_x = np.float64(0.0)
-        self.prev_pos_y = np.float64(0.0)
-        self.prev_pos_z = np.float64(0.0)
+
         self.prev_rotation_yaw = np.float32(0.0)
         self.prev_rotation_pitch = np.float32(0.0)
         self.distance_walked_modified = np.float32(0.0)
