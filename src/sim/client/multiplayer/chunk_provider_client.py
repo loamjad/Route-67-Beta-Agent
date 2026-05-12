@@ -18,3 +18,7 @@ class ChunkProviderClient:
         self.chunk_listing.add(chunk)
         chunk.set_chunk_loaded(True)
         return chunk
+
+    def provide_chunk(self, x: int, z: int):
+        chunk = self.chunk_mapping.get_value_by_key(ChunkCoordIntPair.chunk_XZ2_int(x, z))
+        return self.blank_chunk if chunk is None else chunk

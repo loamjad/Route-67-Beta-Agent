@@ -102,8 +102,13 @@ class EntityLivingBase(Entity):
         f4 = np.float32(0.91)
 
         if self.on_ground:
-            # TODO: f4 = this.worldObj.getBlockState(new BlockPos(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.getEntityBoundingBox().minY) - 1, MathHelper.floor_double(this.posZ))).getBlock().slipperiness * 0.91F;
-            pass
+            f4 = self.world_obj.get_block_state(
+                BlockPos(
+                    MathHelper.floor_double(self.pos_x),
+                    MathHelper.floor_double(self.get_entity_bounding_box().min_y) - 1,
+                    MathHelper.floor_double(self.pos_z)
+                    )
+            ).get_block().slipperiness * np.float32(0.91)
 
         self.move_entity(self.motion_x, self.motion_y, self.motion_z)
 

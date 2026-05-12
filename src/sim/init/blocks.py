@@ -1,3 +1,5 @@
+from src.sim.block.block import Block
+
 class Blocks:
     @classmethod
     def get_registered_block(cls, block):
