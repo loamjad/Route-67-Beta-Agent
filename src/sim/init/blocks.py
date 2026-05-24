@@ -1,9 +1,9 @@
-from src.sim.block.block import Block
+from src.sim.block.material_transparent import MaterialTransparent  # sets Material.air
+from src.sim.block.block_air import BlockAir
+from src.sim.block.block_stone import BlockStone
 
 class Blocks:
-    @classmethod
-    def get_registered_block(cls, block):
-        return Block.block
+    pass
 
-Blocks.air = Blocks.get_registered_block("air")
-Blocks.stone = Blocks.get_registered_block("stone")
+Blocks.air = BlockAir()
+Blocks.stone = BlockStone()

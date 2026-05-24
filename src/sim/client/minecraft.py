@@ -7,4 +7,4 @@ class Minecraft:
         self.the_player = None
 
         self.the_world = WorldClient()
-        self.the_player = EntityPlayerSP()
+        self.the_player = EntityPlayerSP(self, self.the_world)

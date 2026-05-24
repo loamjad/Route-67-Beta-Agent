@@ -10,7 +10,7 @@ from src.sim.entity.shared_monster_attributes import SharedMonsterAttributes
 
 
 class EntityLivingBase(Entity):
-    def __init__(self):
+    def __init__(self, world_in):
         self.sprinting_speed_boost_modifier_UUID = uuid.UUID("662A6B8D-DA3E-4C1C-8813-96EA6097278D")
         self.sprinting_speed_boost_modifier = AttributeModifier(self.sprinting_speed_boost_modifier_UUID, "Sprinting spped boost", np.float64(0.30000001192092896), 2).set_saved(False)
         self.attribute_map = None
@@ -26,7 +26,7 @@ class EntityLivingBase(Entity):
         self.land_movement_factor = np.float64(0.10000000149011612) #TODO: Don't init value?
         self.jump_ticks = 0
 
-        super().__init__()
+        super().__init__(world_in)
         self.apply_entity_attributes()
         self.step_height = np.float32(0.6)
 
@@ -86,7 +86,7 @@ class EntityLivingBase(Entity):
                     MathHelper.floor_double(self.pos_x),
                     MathHelper.floor_double(self.get_entity_bounding_box().min_y) - 1,
                     MathHelper.floor_double(self.pos_z)
-                    )
+                )
             ).get_block().slipperiness * np.float32(0.91)
 
         # f4 = np.float32(0.6) * np.float32(0.91)

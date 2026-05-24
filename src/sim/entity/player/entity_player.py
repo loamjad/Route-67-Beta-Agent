@@ -6,13 +6,13 @@ from src.sim.util.block_pos import BlockPos
 
 
 class EntityPlayer(EntityLivingBase):
-    def __init__(self):
+    def __init__(self, world_in):
         # The current location of the player
         self.player_location: BlockPos = None
         self.speed_on_ground = np.float32(0.1)
         self.speed_in_air = np.float32(0.02)
 
-        super().__init__()
+        super().__init__(world_in)
         
 
     def on_update(self):

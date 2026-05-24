@@ -4,8 +4,8 @@ from src.sim.client.entity.entity_player_sp import EntityPlayerSP
 An instance of a player in a Minecraft world.
 """
 class Agent:
-    def __init__(self):
-        self.player = EntityPlayerSP()
+    def __init__(self, player):
+        self.player = player
         
     def run_tick(self):
         self.player.on_update()

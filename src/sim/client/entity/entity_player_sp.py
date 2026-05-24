@@ -6,10 +6,11 @@ from src.sim.client.settings.game_settings import GameSettings
 
 class EntityPlayerSP(AbstractClientPlayer):
 
-    def __init__(self):
-        self.movement_input = MovementInputFromOptions(GameSettings())
+    def __init__(self, mc_in, world_in):
+        super().__init__(world_in)
 
-        super().__init__()
+        self.movement_input = MovementInputFromOptions(GameSettings())
+        self.mc = mc_in
         
     def on_update(self):
         super().on_update()
